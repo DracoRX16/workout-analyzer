@@ -1,11 +1,16 @@
 import com.google.gson.JsonParseException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class Main {
 
     void main() {
         boolean running = true;
+        List<Workout> workoutHistory = new ArrayList<>();
 
         IO.println("Welcome!");
 
@@ -65,7 +70,75 @@ public class Main {
                     }
                 }
 
-                case "2" -> IO.println("Workout logging coming soon!");
+                case "2" -> {
+                    IO.println("\n===== Log Workout =====");
+
+                    String workoutSearch = IO.readln("Enter exercise name: ").trim();
+                    if (workoutSearch.isEmpty()) {
+                        IO.println("Exercise name cannot be empty.");
+                        break;
+                    }
+
+                    try {
+                        ExerciseApiClient apiClient = new ExerciseApiClient();
+                        ExerciseParser parser = new ExerciseParser();
+
+                        String json = apiClient.searchExercises(workoutSearch);
+                        List<Exercise> matches = parser.parseExercises(json);
+
+                        if (matches.isEmpty()) {
+                            IO.println("No matching exercises found.");
+                            break;
+                        }
+
+                        IO.println("\nMatching exercises:");
+                        for (int i = 0; i < matches.size(); i++) {
+                            Exercise exercise = matches.get(i);
+                            IO.println((i + 1) + ". " + exercise.getName() + " (ID: " + exercise.getId() + ")");
+                        }
+
+                        int selection = Integer.parseInt(IO.readln("\nSelect exercise number: ").trim());
+                        if (selection < 1 || selection > matches.size()) {
+                            IO.println("Invalid exercise selection.");
+                            break;
+                        }
+
+                        Exercise selectedExercise = matches.get(selection - 1);
+
+                        LocalDate date = LocalDate.parse(IO.readln("Date (YYYY-MM-DD): ").trim());
+                        int sets = Integer.parseInt(IO.readln("Sets: ").trim());
+                        int reps = Integer.parseInt(IO.readln("Reps: ").trim());
+                        double weight = Double.parseDouble(IO.readln("Weight (lbs): ").trim());
+
+                        if (sets <= 0 || reps <= 0 || !Double.isFinite(weight) || weight < 0) {
+                            IO.println("Invalid workout values.");
+                            break;
+                        }
+
+                        Workout workout = new Workout(date, selectedExercise, sets, reps, weight);
+                        workoutHistory.add(workout);
+
+                        IO.println("\nWorkout logged successfully!");
+                        IO.println("Exercise: " + selectedExercise.getName());
+                        IO.println("Date: " + date);
+                        IO.println("Sets: " + sets);
+                        IO.println("Reps: " + reps);
+                        IO.println("Weight: " + weight + " lbs");
+                        IO.println("Workouts in current session: " + workoutHistory.size());
+
+                    } catch (NumberFormatException _) {
+                        IO.println("Please enter valid numbers.");
+                    } catch (DateTimeParseException _) {
+                        IO.println("Invalid date. Use YYYY-MM-DD.");
+                    } catch (IOException e) {
+                        IO.println("API error: " + e.getMessage());
+                    } catch (InterruptedException _) {
+                        Thread.currentThread().interrupt();
+                        IO.println("Request interrupted.");
+                    } catch (JsonParseException | IllegalStateException e) {
+                        IO.println("Invalid API response: " + e.getMessage());
+                    }
+                }
 
                 case "3" -> IO.println("Weekly report coming soon!");
 
