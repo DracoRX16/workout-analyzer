@@ -1,7 +1,10 @@
+import com.google.gson.JsonParseException;
+import java.io.IOException;
+import java.util.List;
+
 public class Main {
 
-    public static void main(String[] args) {
-
+    void main() {
         boolean running = true;
 
         IO.println("Welcome!");
@@ -12,46 +15,52 @@ public class Main {
             IO.println("2. Log Workout");
             IO.println("3. View Weekly Report");
             IO.println("4. Exit");
-            IO.print("Choose an option: ");
 
-            String choice = IO.readln();
+            String choice = IO.readln("Choose an option: ");
 
             switch (choice) {
                 case "1" -> {
                     IO.println("\n===== Exercise Search =====");
 
+                    String searchTerm = IO.readln("Enter exercise name: ").trim();
+                    if (searchTerm.isEmpty()) {
+                        IO.println("Please enter an exercise name.");
+                        break;
+                    }
+
                     try {
                         ExerciseApiClient apiClient = new ExerciseApiClient();
                         ExerciseParser parser = new ExerciseParser();
 
-                        String json = apiClient.getExercises();
-
-                        java.util.List<Exercise> exercises =
-                                parser.parseExercises(json);
+                        String json = apiClient.searchExercises(searchTerm);
+                        List<Exercise> exercises = parser.parseExercises(json);
 
                         if (exercises.isEmpty()) {
-                            IO.println("No English-language exercises found.");
+                            IO.println("No matching exercises found.");
+                            break;
                         }
+
+                        IO.println("\n===== Search Results =====");
 
                         for (Exercise exercise : exercises) {
+                            String muscles = exercise.getPrimaryMuscles().isEmpty()
+                                    ? "None listed"
+                                    : String.join(", ", exercise.getPrimaryMuscles());
+
                             IO.println("\nID: " + exercise.getId());
                             IO.println("Exercise: " + exercise.getName());
-                            IO.println(
-                                    "Primary Muscles: " +
-                                            (exercise.getPrimaryMuscles().isEmpty()
-                                                    ? "None listed"
-                                                    : String.join(", ",
-                                                    exercise.getPrimaryMuscles()))
-                            );
+                            IO.println("Primary Muscles: " + muscles);
+
                         }
 
-                    } catch (java.io.IOException e) {
+                        IO.println("\nShowing %d English-language exercises.".formatted(exercises.size()));
+
+                    } catch (IOException e) {
                         IO.println("API error: " + e.getMessage());
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException _) {
                         Thread.currentThread().interrupt();
-                        IO.println("Request interrupted.");
-                    } catch (com.google.gson.JsonParseException |
-                             IllegalStateException e) {
+                        IO.println("Search interrupted.");
+                    } catch (JsonParseException | IllegalStateException e) {
                         IO.println("Invalid API response: " + e.getMessage());
                     }
                 }
