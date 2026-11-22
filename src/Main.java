@@ -12,10 +12,23 @@ public class Main {
         boolean running = true;
         List<Workout> workoutHistory = new ArrayList<>();
 
+
+        WorkoutStorage storage = new WorkoutStorage();
+
+        try {
+            workoutHistory.addAll(storage.loadWorkouts());
+            IO.println("Loaded " + workoutHistory.size() + " saved workouts.");
+        } catch (IOException e) {
+            IO.println("Could not load workout history: " + e.getMessage());
+            IO.println("Fix the CSV file before logging new workouts.");
+            return;
+        }
+
+
         IO.println("Welcome!");
 
         while (running) {
-            IO.println("\nWorkout Analyzer");
+            IO.println("\n===== Workout Analyzer =====");
             IO.println("1. Search Exercises");
             IO.println("2. Log Workout");
             IO.println("3. View Weekly Report");
@@ -116,6 +129,7 @@ public class Main {
                         }
 
                         Workout workout = new Workout(date, selectedExercise, sets, reps, weight);
+                        storage.saveWorkout(workout);
                         workoutHistory.add(workout);
 
                         IO.println("\nWorkout logged successfully!");
