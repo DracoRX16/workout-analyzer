@@ -1,9 +1,12 @@
 import com.google.gson.JsonParseException;
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class Main {
@@ -154,7 +157,39 @@ public class Main {
                     }
                 }
 
-                case "3" -> IO.println("Weekly report coming soon!");
+                case "3" -> {
+                    IO.println("\n===== Weekly Muscle Report =====");
+
+                    String dateInput = IO.readln("Enter a date in the week (YYYY-MM-DD), or press Enter for this week: ").trim();
+
+                    try {
+                        // Default to today's date if the user just pressed Enter
+                        LocalDate selectedDate = dateInput.isEmpty()
+                                ? LocalDate.now()
+                                : LocalDate.parse(dateInput);
+
+                        // Use TemporalAdjusters to cleanly find Monday and Sunday of the selected week
+                        LocalDate weekStart = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+                        LocalDate weekEnd = weekStart.plusDays(6);
+
+                        MuscleAnalyzer analyzer = new MuscleAnalyzer();
+                        Map<String, Integer> results = analyzer.analyzeWeek(workoutHistory, selectedDate);
+
+                        IO.println("\nWeek: " + weekStart + " to " + weekEnd);
+
+                        if (results.isEmpty()) {
+                            IO.println("No primary muscle sets found for this week.");
+                        } else {
+                            IO.println("\nMuscle Group     Sets");
+                            IO.println("---------------------");
+
+                            results.forEach((muscle, sets) -> IO.println(String.format("%-16s %d", muscle, sets)));
+                        }
+
+                    } catch (DateTimeParseException e) {
+                        IO.println("Invalid date. Use YYYY-MM-DD.");
+                    }
+                }
 
                 case "4" -> {
                     IO.println("Goodbye!");
