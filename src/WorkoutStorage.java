@@ -20,9 +20,13 @@ public class WorkoutStorage {
             Files.createDirectories(parent);
         }
 
+        // Write the header only when creating a new CSV file,
+        // so additional workouts can be appended without duplicate headers.
         boolean needsHeader = Files.notExists(FILE) || Files.size(FILE) == 0;
         Exercise exercise = workout.getExercise();
 
+        // Keep all primary muscles in one CSV column using "|" as
+        // a separator, allowing them to be reconstructed when loading.
         String muscles = String.join("|", exercise.getPrimaryMuscles());
         String row = String.join(",",
                 workout.getDate().toString(),
@@ -89,6 +93,8 @@ public class WorkoutStorage {
         return new Workout(date, exercise, sets, reps, weight);
     }
 
+    // Quote fields containing CSV special characters and double
+    // embedded quotes so exercise names don't corrupt the columns.
     private String escape(String value) {
         if (value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r")) {
             return "\"" + value.replace("\"", "\"\"") + "\"";
@@ -96,6 +102,8 @@ public class WorkoutStorage {
         return value;
     }
 
+    // Split fields only at commas outside quotation marks.
+    // Two consecutive quotes inside a quoted field represent one quote.
     private List<String> parseCsvLine(String line) {
         List<String> fields = new ArrayList<>();
         StringBuilder current = new StringBuilder();

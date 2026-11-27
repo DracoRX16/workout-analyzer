@@ -15,15 +15,20 @@ public class ExerciseApiClient {
     public String searchExercises(String searchTerm)
             throws IOException, InterruptedException {
 
+        // Encode user input so spaces and special characters
+        // can be safely included in the API request URL.
         String encodedTerm = URLEncoder.encode(
                 searchTerm.trim(), StandardCharsets.UTF_8
         );
 
+        // Search English exercise names and limit results to
+        // 20 entries to keep the command-line output manageable.
         String url = BASE_URL
                 + "?name__search=" + encodedTerm
                 + "&language__code=en"
                 + "&limit=20";
 
+        // Avoid waiting indefinitely if the API is slow or unavailable.
         HttpRequest request = HttpRequest.newBuilder(URI.create(url))
                 .timeout(Duration.ofSeconds(15))
                 .header("Accept", "application/json")

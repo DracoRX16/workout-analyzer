@@ -30,6 +30,8 @@ public class ExerciseParser {
                 JsonObject translation =
                         translationElement.getAsJsonObject();
 
+                // wger stores exercise names in multiple languages.
+                // Language ID 2 identifies the English translation.
                 if (translation.get("language").getAsInt() == 2) {
                     name = translation.get("name").getAsString();
                     break;
@@ -41,7 +43,8 @@ public class ExerciseParser {
                 continue;
             }
 
-            // Extract the primary muscle groups
+            // Only primary muscles are needed because the weekly analyzer
+            // credits sets to primary muscles, not secondary muscles.
             List<String> primaryMuscles = new ArrayList<>();
 
             JsonArray muscles = exerciseJson.getAsJsonArray("muscles");

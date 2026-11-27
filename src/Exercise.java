@@ -1,5 +1,9 @@
 import java.util.List;
 
+/**
+ * Represents a physical exercise with an identifier, name, and targeted muscle groups.
+ */
+
 public class Exercise {
 
     private final int id;
@@ -9,6 +13,8 @@ public class Exercise {
     public Exercise(int id, String name, List<String> primaryMuscles) {
         this.id = id;
         this.name = name;
+        // Make a defensive copy so external changes to the original
+        // list cannot alter the exercise's primary muscle groups.
         this.primaryMuscles = List.copyOf(primaryMuscles);
     }
 

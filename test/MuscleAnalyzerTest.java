@@ -4,7 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Unit tests for weekly muscle-group set calculations.
+ * Tests use sample workouts so they don't depend on
+ * the wger API or the user's saved CSV data.
+ */
 
 class MuscleAnalyzerTest {
 

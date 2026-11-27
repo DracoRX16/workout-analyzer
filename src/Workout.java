@@ -1,5 +1,9 @@
-
 import java.time.LocalDate;
+
+/**
+ * Represents a single logged workout entry, including the
+ * selected exercise and its recorded sets, reps, and weight.
+ */
 
 public class Workout {
 

@@ -9,15 +9,17 @@ import java.util.stream.Collectors;
 public class MuscleAnalyzer {
 
     /**
-     * Counts how many sets were performed for each primary muscle during the
-     * Monday-to-Sunday week containing the given date.
+     * Calculates weekly set totals for each primary muscle group.
+     * Weeks run from Monday through Sunday.
      *
-     * What is a Map<String, Integer>?
-     * The "Key" (String) is the unique label you look up; here, a muscle name like "Chest".
-     * The "Value" (Integer) is the data stored next to that label; here, the total sets like 12.
-     * Unlike a List (where you look things up by index 0, 1, 2...), a Map lets you look up
-     * a count directly by the muscle's name, and it prevents duplicate muscle names.
+     * Each set is credited to every primary muscle listed for
+     * an exercise. Secondary muscles are not counted.
+     *
+     * @param workouts saved workout history
+     * @param dateInWeek any date within the week being analyzed
+     * @return muscle names mapped to their weekly set totals
      */
+
     public Map<String, Integer> analyzeWeek(List<Workout> workouts, LocalDate dateInWeek) {
         // Find the Monday at the start of the target week
         LocalDate startOfWeek = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));

@@ -19,6 +19,8 @@ public class Main {
         WorkoutStorage storage = new WorkoutStorage();
 
         try {
+            // Load previous workouts so the history and weekly reports
+            // include records from earlier application sessions.
             workoutHistory.addAll(storage.loadWorkouts());
             IO.println("Loaded " + workoutHistory.size() + " saved workouts.");
         } catch (IOException e) {
@@ -120,6 +122,7 @@ public class Main {
                             break;
                         }
 
+                        // Menu choices start at 1, but Java list indexes start at 0.
                         Exercise selectedExercise = matches.get(selection - 1);
 
                         LocalDate date = LocalDate.parse(IO.readln("Date (YYYY-MM-DD): ").trim());
@@ -133,6 +136,8 @@ public class Main {
                         }
 
                         Workout workout = new Workout(date, selectedExercise, sets, reps, weight);
+                        // Save the workout before updating memory so a failed
+                        // file write does not appear as a successful log.
                         storage.saveWorkout(workout);
                         workoutHistory.add(workout);
 
@@ -142,7 +147,7 @@ public class Main {
                         IO.println("Sets: " + sets);
                         IO.println("Reps: " + reps);
                         IO.println("Weight: " + weight + " lbs");
-                        IO.println("Workouts in current session: " + workoutHistory.size());
+                        IO.println("Total saved workouts: " + workoutHistory.size());
 
                     } catch (NumberFormatException _) {
                         IO.println("Please enter valid numbers.");
@@ -169,10 +174,13 @@ public class Main {
                                 ? LocalDate.now()
                                 : LocalDate.parse(dateInput);
 
-                        // Use TemporalAdjusters to cleanly find Monday and Sunday of the selected week
+                        // Weekly reports use Monday through Sunday,
+                        // regardless of which date the user enters.
                         LocalDate weekStart = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
                         LocalDate weekEnd = weekStart.plusDays(6);
 
+                        // Analyze saved workouts rather than requesting exercise
+                        // information again, so reports work without internet access.
                         MuscleAnalyzer analyzer = new MuscleAnalyzer();
                         Map<String, Integer> results = analyzer.analyzeWeek(workoutHistory, selectedDate);
 
