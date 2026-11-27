@@ -35,7 +35,8 @@ public class Main {
             IO.println("1. Search Exercises");
             IO.println("2. Log Workout");
             IO.println("3. View Weekly Report");
-            IO.println("4. Exit");
+            IO.println("4. View Workout History");
+            IO.println("5. Exit");
 
             String choice = IO.readln("Choose an option: ");
 
@@ -192,6 +193,24 @@ public class Main {
                 }
 
                 case "4" -> {
+                    IO.println("\n===== Workout History =====");
+
+                    if (workoutHistory.isEmpty()) {
+                        IO.println("No workouts recorded yet.");
+                    } else {
+                        for (Workout workout : workoutHistory) {
+                            IO.println("\nDate: " + workout.getDate());
+                            IO.println("Exercise: " + workout.getExercise().getName());
+                            IO.println("Sets: " + workout.getSets());
+                            IO.println("Reps: " + workout.getReps());
+                            IO.println("Weight: " + workout.getWeight() + " lbs");
+                        }
+
+                        IO.println("\nTotal workouts: " + workoutHistory.size());
+                    }
+                }
+
+                case "5" -> {
                     IO.println("Goodbye!");
                     running = false;
                 }

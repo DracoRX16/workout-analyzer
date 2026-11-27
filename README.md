@@ -191,18 +191,27 @@ test/MuscleAnalyzerTest.java
 - Weekly totals are based on logged sets rather than exercise intensity or effectiveness.
 - Workout data is stored locally rather than synchronized across devices.
 
-## Future Improvements
 
-- Graphical dashboard and charts
-- Monthly muscle group comparisons
+## Roadmap
+
+### MVP
+- Command-line menu
+- wger API integration
+- Exercise search
+- Workout logging
+- CSV persistence
+- Weekly muscle-group analysis
+- JUnit tests for weekly analysis
+
+### Schedule Feature
+- Workout History Viewer : display previously logged workouts directly in the command line interface
+
+### Future Improvements
+- Monthly training comparisons
 - Strength progression tracking
+- Graphical dashboard
 - Customizable training targets
-- Exercise search pagination
-- Additional automated tests for CSV storage and API parsing
 
-## Project Status
-
-**Core MVP implemented.** Final testing, code cleanup, and documentation are in progress.
 
 ## API Acknowledgment
 
