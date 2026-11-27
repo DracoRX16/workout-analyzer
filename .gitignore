@@ -28,8 +28,8 @@ replay_pid*
 .idea/
 *.iml
 
-# Java compiled files
-*.class
-
 # Accidental project folder
 /untitled/
+
+# Local workout data
+/data/*.csv
