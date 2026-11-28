@@ -27,8 +27,8 @@ public class MuscleAnalyzer {
         // Sunday is always 6 days after Monday
         LocalDate endOfWeek = startOfWeek.plusDays(6);
 
-        // A "Stream" lets us pass the list of workouts down an assembly line of steps
-        // instead of writing nested for-loops.
+        // A Stream lets us pass the list of workouts down an assembly line of steps
+        // instead of writing nested for loops.
         return workouts.stream()
                 // Keep only workouts whose date is between and including Monday and Sunday
                 // Any workout outside this week gets dropped from the assembly line
@@ -37,8 +37,8 @@ public class MuscleAnalyzer {
 
                 // Each workout can train multiple primary muscles
                 // (for example, Bench Press trains ["Chest", "Triceps"]).
-                // For every muscle in that list, we create a temporary 2-item pair called a
-                // Map.Entry e.g., ("Chest", 3) and ("Triceps", 3) and put all pairs
+                // For every muscle in that list, we create a temporary 2 item pair called a
+                // Map.Entry, ("Chest", 3) and ("Triceps", 3) and put all pairs
                 // into one single stream.
                 .flatMap(workout -> workout.getExercise().getPrimaryMuscles().stream()
                         .map(muscle -> Map.<String, Integer>entry(muscle, workout.getSets())))
@@ -46,11 +46,11 @@ public class MuscleAnalyzer {
                 // Gather all those ("Muscle", sets) pairs into
                 // our final lookup table. Collectors.toMap takes 4 instructions:
                 .collect(Collectors.toMap(
-                        Map.Entry::getKey,   // Key: use the muscle name as the label
-                        Map.Entry::getValue, // Value: use the set count as the number
-                        Integer::sum,        // Merge rule: if "Chest" appears twice, add the numbers together
-                        TreeMap::new         // Map type: a TreeMap is a special Map that automatically
-                        //keeps all keys sorted in alphabetical order (A to Z)
+                        Map.Entry::getKey,   // use the muscle name as the label
+                        Map.Entry::getValue, // use the set count as the number
+                        Integer::sum,        // if "Chest" appears twice, add the numbers together
+                        TreeMap::new         // a TreeMap is a special Map that automatically
+                        // keeps all keys sorted in alphabetical order (A to Z)
                 ));
     }
 }
