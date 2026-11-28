@@ -108,20 +108,21 @@ The application displays a command-line menu:
 1. Search Exercises
 2. Log Workout
 3. View Weekly Report
-4. Exit
+4. View Workout History
+5. Exit
 ```
 
 ### Search Exercises
 
 Select option 1 and enter an exercise name, such as `squat` or `curl`.
 
-The application searches wger and displays matching exercise names, IDs, and primary muscle groups.
+The application searches the wger REST API and displays matching exercise names, IDs, and primary muscle groups.
 
 ### Log Workout
 
 Select option 2, search for an exercise, and choose one of the results.
 
-Enter the workout date, sets, repetitions, and weight. The workout is saved to `data/workouts.csv`.
+Enter the workout date, sets, repetitions, and weight in pounds. The workout is saved to `data/workouts.csv` and remains available after restarting the application.
 
 ### View Weekly Report
 
@@ -129,7 +130,21 @@ Select option 3 to generate a muscle-group report.
 
 Press Enter to analyze the current week or enter a date in `YYYY-MM-DD` format to select another week.
 
-Weeks run from Monday through Sunday.
+Weeks run from Monday through Sunday. The report displays the total number of logged sets for each primary muscle group during the selected week.
+
+### View Workout History
+
+Select option 4 to display all previously logged workouts.
+
+Each record includes the workout date, exercise name, sets, repetitions, and weight in pounds. The application also displays the total number of recorded workouts.
+
+If no workouts have been recorded, the application displays a message indicating that the workout history is empty.
+
+This feature was implemented as an extension to the original MVP.
+
+### Exit
+
+Select option 5 to close the application. Previously saved workouts remain stored locally for future sessions.
 
 ## How Muscle-Group Analysis Works
 
