@@ -8,6 +8,10 @@ Workout Analyzer helps users identify which muscle groups they have trained duri
 
 The application retrieves exercise information from the public wger REST API, lets users record workout details, stores their workout history locally in a CSV file, and generates weekly muscle-group reports.
 
+## How It Works
+
+![Workout Analyzer System Diagram](System%20Diagram.png)
+
 ## Features
 
 - **Exercise Search:** Search for exercises by name using the wger REST API.
@@ -58,7 +62,7 @@ workout-analyzer/
 
 ### Requirements
 
-- Java 21 or newer
+- JDK 27 (tested with version 27.0.1.0.3)
 - IntelliJ IDEA
 - Internet access for exercise searches
 - Gson 2.15.0
