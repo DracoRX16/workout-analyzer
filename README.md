@@ -195,22 +195,22 @@ test/MuscleAnalyzerTest.java
 ## Roadmap
 
 ### MVP
-- Command-line menu
-- wger API integration
-- Exercise search
-- Workout logging
-- CSV persistence
-- Weekly muscle-group analysis
-- JUnit tests for weekly analysis
+- [x] Command-line menu
+- [x] wger API integration
+- [x] Exercise search
+- [x] Workout logging
+- [x] CSV persistence
+- [x] Weekly muscle-group analysis
+- [x] JUnit tests for weekly analysis
 
 ### Schedule Feature
-- Workout History Viewer : display previously logged workouts directly in the command line interface
+- [x] **Workout History Viewer:** Display previously logged workouts directly in the command-line interface
 
 ### Future Improvements
-- Monthly training comparisons
-- Strength progression tracking
-- Graphical dashboard
-- Customizable training targets
+- [ ] Monthly training comparisons
+- [ ] Strength progression tracking
+- [ ] Graphical dashboard
+- [ ] Customizable training targets
 
 
 ## API Acknowledgment
